@@ -40,7 +40,7 @@ sufficient = True
 
 
 def order():
-    return input("  What would you like? (espresso/latte/cappuccino): ").lower()
+    return input("\nWhat would you like? (espresso/latte/cappuccino): ").lower()
 
 
 def report():
@@ -76,11 +76,11 @@ def transaction(coffee_choice):
     payment = coins()
     cost = MENU[coffee_choice]['cost']
     if payment >= cost:
-        make_coffee(coffee_choice)
         change = payment - cost
-        return print(f"Here is your ${change} in change.")
+        print(f"Here is your ${change} in change.")
+        make_coffee(coffee_choice)
     else:
-        print("Sorry, that's not enough money.")
+        print("Sorry, that's not enough money...")
         print("Money refunded.")
 
 
@@ -90,6 +90,7 @@ def make_coffee(coffee_choice):
     for k, v in coffee_ingredients.items():
         resources[k] -= v
     money += MENU[coffee_choice]['cost']
+    print(f"Here is your {coffee_choice} ☕️ Enjoy!")
 
 
 def coffee_machine():
