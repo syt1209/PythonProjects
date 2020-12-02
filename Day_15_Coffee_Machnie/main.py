@@ -61,7 +61,6 @@ def sufficient_resources(coffee_choice):
             return True
 
 
-# TODO 5. Process coins.
 def coins():
     print("Please insert coins.")
     n_quarters = int(input("how many quarters?: "))
