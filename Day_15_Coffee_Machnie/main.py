@@ -30,16 +30,83 @@ resources = {
     "coffee": 100,
 }
 
-# TODO 1. Prompt user by asking "What would you like? (espresso/latte/cappuccino): "
+QUARTER = 1/4
+DIME = 1/10
+NICKEL = 1/20
+PENNY = 1/100
+machine_on = True
+money = 0
+sufficient = True
 
-# TODO 2. Turn off the coffee machine by entering "off" to the prompt
 
-# TODO 3. Print report. When user enters "report", generate current Resource values and Money earned
+def order():
+    return input("  What would you like? (espresso/latte/cappuccino): ").lower()
 
-# TODO 4. Check resources sufficient? Check and feedback to user
+
+def report():
+    print(f"Water: {resources['water']}")
+    print(f"Milk: {resources['milk']}")
+    print(f"Coffee: {resources['coffee']}")
+    print(f"Money: ${money}")
+
+
+def sufficient_resources(coffee_choice):
+    global sufficient
+    coffee_ingredients = MENU[coffee_choice]['ingredients']
+    for k, v in coffee_ingredients.items():
+        if resources[k] < v:
+            print(f"Sorry, there is not enough {k}...")
+            return False
+        else:
+            return True
+
 
 # TODO 5. Process coins.
+def coins():
+    print("Please insert coins.")
+    n_quarters = int(input("how many quarters?: "))
+    n_dimes = int(input("how many dimes?: "))
+    n_nickles = int(input("how many nickles?: "))
+    n_pennies = int(input("how many pennies?: "))
+    payment = QUARTER*n_quarters + DIME*n_dimes + DIME*n_dimes + PENNY*n_pennies
+    return payment
 
-# TODO 6. Check transaction successful?
 
-# TODO 7. Make coffee.
+def transaction(coffee_choice):
+    payment = coins()
+    cost = MENU[coffee_choice]['cost']
+    if payment >= cost:
+        make_coffee(coffee_choice)
+        change = payment - cost
+        return print(f"Here is your ${change} in change.")
+    else:
+        print("Sorry, that's not enough money.")
+        print("Money refunded.")
+
+
+def make_coffee(coffee_choice):
+    global money
+    coffee_ingredients = MENU[coffee_choice]['ingredients']
+    for k, v in coffee_ingredients.items():
+        resources[k] -= v
+    money += MENU[coffee_choice]['cost']
+
+
+def coffee_machine():
+    global machine_on
+    while machine_on:
+        choice = order()
+        if choice in ["espresso", "latte", "cappuccino"]:
+            if sufficient_resources(choice):
+                transaction(choice)
+            else:
+                continue
+        if choice == "off":
+            print("Coffee machine is turned off...")
+            machine_on = False
+            break
+        if choice == "report":
+            report()
+
+
+coffee_machine()
