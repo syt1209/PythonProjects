@@ -11,7 +11,7 @@ MY_EMAIL = "ys.developer2020@gmail.com"
 PASSWORD = "0202repoleved.sy"
 
 
-def inrange(pos):
+def in_range(pos):
     upper_lat = MY_LAT + MARGIN
     lower_lat = MY_LAT - MARGIN
     upper_lng = MY_LNG + MARGIN
@@ -20,7 +20,7 @@ def inrange(pos):
         return True
 
 
-def isdark(hour, sunrise_hour, sunset_hour):
+def is_dark(hour, sunrise_hour, sunset_hour):
     if hour > sunset_hour or hour < sunrise_hour:
         return True
 
@@ -53,7 +53,7 @@ iss_position = (latitude, longitude)
 
 while True:
     time.sleep(60)
-    if inrange(iss_position) and isdark(current_hour, sunrise, sunset):
+    if in_range(iss_position) and is_dark(current_hour, sunrise, sunset):
         with smtplib.SMTP("smtp.gmail.com") as connection:
             connection.starttls()
             connection.login(MY_EMAIL, PASSWORD)
